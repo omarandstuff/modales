@@ -1,0 +1,48 @@
+{
+  "name": "modales",
+  "version": "0.0.0",
+  "description": "Router and modals advanced system",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "David De Anda <omarandstuff@gmail.com> (https://github.com/omarandstuff)",
+  "license": "MIT",
+  "homepage": "https://github.com/omarandstuff/modales#readme",
+  "repository": "github:omarandstuff/modales",
+  "bugs": "https://github.com/omarandstuff/modales/issues",
+  "scripts": {
+    "clean": "rimraf dist coverage",
+    "build": "tsc",
+    "lint": "eslint src test --ext .ts",
+    "test": "jest --watch",
+    "test:coverage": "jest --coverage --no-cache",
+    "playground": "babel-node playground",
+    "prepare": "yarn clean && yarn lint && yarn test:coverage && yarn build"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.13",
+    "@types/node": "^12.0.10",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "jest": "^24.8.0",
+    "prettier": "^1.17.1",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.4.5"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "keywords": [
+    "react-router",
+    "modal",
+    "router",
+    "groups",
+    "configurable"
+  ]
+}
