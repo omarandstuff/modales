@@ -5,9 +5,9 @@ export default class ProviderHelper {
   public blurEnabled: boolean = true
   public modalsUpdateCallBack: (modals: Modal[]) => void = null
   public routeModalsEnabled: boolean = true
+  public modals: Modal[] = []
 
   private currentID: number = 0
-  private modals: Modal[] = []
 
   public clearModals(modalId?: number, inclusive?: boolean): void {
     if (this.modals.length > 0) {
@@ -53,18 +53,18 @@ export default class ProviderHelper {
 
   public launchModal(
     content: React.ReactNode | React.ReactNode[],
-    onOutsideClick: (event: MouseEvent) => boolean,
-    onScape: (event: KeyboardEvent) => boolean,
-    background?: ModalBackground
+    background?: ModalBackground,
+    onOutsideClick?: (event: MouseEvent) => boolean,
+    onScape?: (event: KeyboardEvent) => boolean
   ): Modal {
     const actualOnOutsideClick = (event: MouseEvent): void => {
-      if (onOutsideClick && onOutsideClick(event)) {
+      if (!onOutsideClick || onOutsideClick(event)) {
         this.popModal()
       }
     }
 
     const actualOnScape = (event: KeyboardEvent): void => {
-      if (onOutsideClick && onScape(event)) {
+      if (!onScape || onScape(event)) {
         this.popModal()
       }
     }

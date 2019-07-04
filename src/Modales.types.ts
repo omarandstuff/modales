@@ -14,3 +14,8 @@ export interface Modal {
   type: 'route' | 'custom'
   withOutInitialAnimation: boolean
 }
+
+export interface ModalesConfiguration {
+  blurEnabled?: boolean
+  routeModalsEnabled?: boolean
+}

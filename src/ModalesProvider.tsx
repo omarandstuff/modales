@@ -527,7 +527,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
     }
   }
 
-  public render() {
+  public render(): React.ReactNode {
     return (
       <ModalesScene providerHelper={this.providerHelper}>
         <Switch location={this.baseLocation}>{this.props.children || null}</Switch>

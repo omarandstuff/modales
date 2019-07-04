@@ -26,6 +26,7 @@ export default class ModalViewer extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
 
+    // Kepp track of the modal being on top so the scape event is only relevant to it
     ModalViewer.selfStack.push(props.modalId)
 
     this.handleKeyDown = this.handleKeyDown.bind(this)

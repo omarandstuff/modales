@@ -23,9 +23,10 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
     this.props.providerHelper.modalsUpdateCallBack = this.handleModalsUpdate.bind(this)
   }
 
-  private handleModalsUpdate(modals: Modal[]) {
+  private handleModalsUpdate(modals: Modal[]): void {
     let blurComponentBeneathModals: boolean = false
 
+    // Keep the body scroll before presenting the first modal
     if (!this.preModalScroll) {
       this.preModalScroll = window.pageYOffset
     }
@@ -35,6 +36,8 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
     for (let i: number = 0; i < modals.length; i++) {
       const modal: Modal = modals[i]
 
+      // We need to first check if there is a modal that will make the body be blured
+      // Just onece only one blurred modal on the top and we blur the body
       if (i === 0) {
         for (let j = i; j < modals.length; j++) {
           const nextModal: Modal = modals[j]
@@ -47,6 +50,7 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
       }
       let actAsBlur: boolean = false
 
+      // Now we need to now if this modal is being blurred by another modal at some level
       for (let j: number = i + 1; j < modals.length; j++) {
         const nextModal: Modal = modals[j]
 
@@ -127,23 +131,21 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
     this.setState({ modals: renderedModals, blured: blurComponentBeneathModals && this.props.providerHelper.blurEnabled })
   }
 
-  private shouldBlurBeneathModal(modal: Modal) {
-    if (modal) {
-      if (modal.type === 'route') {
-        const blurWasSet: boolean = modal.location.state && modal.location.state.background === 'blured'
+  private shouldBlurBeneathModal(modal: Modal): boolean {
+    if (modal.type === 'route') {
+      const blurWasSet: boolean = modal.location.state && modal.location.state.background === 'blured'
 
-        if (!modal.closed && blurWasSet) {
-          return true
-        }
-      } else if (modal.type === 'custom') {
-        if (!modal.closed && modal.background === 'blured') {
-          return true
-        }
+      if (!modal.closed && blurWasSet) {
+        return true
+      }
+    } else if (modal.type === 'custom') {
+      if (!modal.closed && modal.background === 'blured') {
+        return true
       }
     }
   }
 
-  render() {
+  render(): React.ReactNode {
     const classNames = ['modales-scene', this.state.blured ? ' blured' : null].join(' ').replace(/\s+/g, ' ')
 
     return (
