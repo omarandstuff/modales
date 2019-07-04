@@ -11,24 +11,35 @@
   "bugs": "https://github.com/omarandstuff/modales/issues",
   "scripts": {
     "clean": "rimraf dist coverage",
-    "build": "tsc",
+    "build": "tsc && yarn build:css && cp -v src/*.css dist/",
+    "build:css": "node-sass src/ -o src/",
     "lint": "eslint src test --ext .ts",
     "test": "jest --watch",
     "test:coverage": "jest --coverage --no-cache",
     "playground": "babel-node playground",
-    "prepare": "yarn clean && yarn lint && yarn test:coverage && yarn build"
+    "prepare": "yarn clean && yarn lint && yarn test:coverage && yarn build",
+    "watch:css": "yarn build:css && node-sass src/ -o src/ -w -r"
   },
   "dependencies": {
+    "@types/node": "^12.0.10",
+    "@types/react": "^16.8.22",
+    "@types/react-router-dom": "^4.3.4",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1"
   },
   "devDependencies": {
     "@types/jest": "^24.0.13",
-    "@types/node": "^12.0.10",
+    "@types/node-sass": "^4.11.0",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.8.0",
+    "node-sass": "^4.12.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^1.17.1",
     "rimraf": "^2.6.3",
     "ts-jest": "^24.0.2",
