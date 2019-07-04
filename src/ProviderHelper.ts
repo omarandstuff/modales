@@ -1,9 +1,9 @@
 import { Modal, ModalBackground } from './Modales.types'
-import { Location, History } from 'history'
+import { Location } from 'history'
 
 export default class ProviderHelper {
   public blurEnabled: boolean = true
-  public providerCallBack: (modals: Modal[]) => void = null
+  public modalsUpdateCallBack: (modals: Modal[]) => void = null
   public routeModalsEnabled: boolean = true
 
   private currentID: number = 0
@@ -48,7 +48,7 @@ export default class ProviderHelper {
     }
 
     this.modals.splice(modalsFromIndex, modalsToRange)
-    this.providerCallBack(this.modals)
+    this.modalsUpdateCallBack(this.modals)
   }
 
   public launchModal(
@@ -80,7 +80,7 @@ export default class ProviderHelper {
     }
 
     this.modals.push(modal)
-    this.providerCallBack(this.modals)
+    this.modalsUpdateCallBack(this.modals)
 
     return modal
   }
@@ -95,7 +95,7 @@ export default class ProviderHelper {
     const modal: Modal = { type: 'route', id: this.currentID++, location, content: routes, onOutsideClick, onScape, withOutInitialAnimation }
 
     this.modals.push(modal)
-    this.providerCallBack(this.modals)
+    this.modalsUpdateCallBack(this.modals)
 
     return modal
   }
@@ -118,13 +118,11 @@ export default class ProviderHelper {
     for (let i = modalsToPopIndex; i < this.modals.length; i++) {
       this.modals[i].closed = true
     }
-    this.providerCallBack(this.modals)
+    this.modalsUpdateCallBack(this.modals)
 
     setTimeout(() => {
       this.modals.splice(modalsToPopIndex, modalsToPopRange)
-      this.providerCallBack(this.modals)
+      this.modalsUpdateCallBack(this.modals)
     }, 350)
   }
-
-  public setRouterBridge(newLocation: Location, historyRef: History): void {}
 }

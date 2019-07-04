@@ -2,12 +2,14 @@ import * as React from 'react'
 import { withRouter } from 'react-router'
 import { Switch, RouteComponentProps } from 'react-router-dom'
 import { Location } from 'history'
-import { ModalesInstance, Modal } from './Modales.types'
+import Modales from './Modales'
+import { Modal } from './Modales.types'
+import ProviderHelper from './ProviderHelper'
 import ModalesScene from './ModalesScene'
 
 type ModalesProviderProps = {
   children?: React.ReactNode | React.ReactNode[]
-  modales: ModalesInstance
+  modales: Modales
   debuggMode?: boolean
 }
 
@@ -23,6 +25,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
   private historyOrder: string[] = []
   private historyMap: { [key: string]: Location } = {}
   private lastLocation: Location = this.props.location
+  private providerHelper: ProviderHelper = new ProviderHelper()
 
   state = { modals: [], blured: false }
 
@@ -37,8 +40,9 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
       props.location.state.modal = false
     }
 
-    // Initial location for router bridge
-    props.modales.providerHelper.setRouterBridge(props.location, props.history)
+    // Connect modales instance
+    props.modales.connectWithProvider(this.providerHelper)
+    props.modales.connectWithRouter(props.location, props.history)
 
     this.baseLocation = props.location
     this.historyOrder = [props.location.key]
@@ -64,7 +68,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
     const locationProcessed = this.handleHistoryEvent(nextProps)
 
     if (locationProcessed) {
-      nextProps.modales.providerHelper.setRouterBridge(locationProcessed, nextProps.history)
+      nextProps.modales.connectWithRouter(locationProcessed, nextProps.history)
     }
 
     return !!locationProcessed
@@ -108,8 +112,8 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
     this.log('~'.repeat(40))
 
     // We just set base location if route modals are not enabled
-    if (!this.props.modales.providerHelper.routeModalsEnabled) {
-      this.props.modales.providerHelper.forceClearModals()
+    if (!this.providerHelper.routeModalsEnabled) {
+      this.providerHelper.forceClearModals()
       this.baseLocation = newLocation
       return newLocation
     }
@@ -172,7 +176,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
       } else {
         // If the new location is not a modal (a new page) we need to clear all modals
         // without animations so the user feels like visiting a new page
-        this.props.modales.providerHelper.forceClearModals()
+        this.providerHelper.forceClearModals()
         this.baseLocation = newLocation
       }
     } else if (action === 'POP') {
@@ -231,7 +235,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
                 // If there are in fact modals after this group
                 // we dismiss them and wipe their modalId
                 if (modalToDismiss) {
-                  this.props.modales.providerHelper.clearModals(modalToDismiss.state.modalId)
+                  this.providerHelper.clearModals(modalToDismiss.state.modalId)
 
                   this.wipeModalIdFromDismissedModals(knownLocationIndex + 1, this.historyOrder.length)
                 }
@@ -257,7 +261,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
               } else {
                 // There are not modals in the same group after the known location
                 // so we just dissmis everything after knowm modal id
-                this.props.modales.providerHelper.clearModals(knownLocation.state.modalId, false)
+                this.providerHelper.clearModals(knownLocation.state.modalId, false)
                 this.wipeModalIdFromDismissedModals(knownLocationIndex + 1, this.historyOrder.length)
               }
             }
@@ -265,7 +269,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
             // If the user is not visiting a location with a different base location
             // we remove all modals because we don't know what modals are on top
             // of this new base location
-            this.props.modales.providerHelper.forceClearModals()
+            this.providerHelper.forceClearModals()
             this.wipeModalIdFromDismissedModals(0, this.historyOrder.length)
           }
 
@@ -280,9 +284,9 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
           // If is the same base location we had we soft dismiss all modals
           // if not we force remove them to give the user the feelong of visiting a new page
           if (this.baseLocation.key === knownLocation.key) {
-            this.props.modales.providerHelper.clearModals()
+            this.providerHelper.clearModals()
           } else {
-            this.props.modales.providerHelper.forceClearModals()
+            this.providerHelper.forceClearModals()
           }
 
           this.wipeModalIdFromDismissedModals(0, this.historyOrder.length)
@@ -296,7 +300,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
         }
       } else {
         // Unkonwn locations can't have modals on the top
-        this.props.modales.providerHelper.forceClearModals()
+        this.providerHelper.forceClearModals()
 
         this.wipeModalIdFromDismissedModals(0, this.historyOrder.length)
 
@@ -373,7 +377,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
       } else {
         // If the replacement is not a modal we use it as a new base location
         // and clear the modals
-        this.props.modales.providerHelper.forceClearModals()
+        this.providerHelper.forceClearModals()
 
         this.wipeModalIdFromDismissedModals(0, this.historyOrder.length)
 
@@ -395,7 +399,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
   }
 
   private launchModal(location: Location, children: React.ReactNode | React.ReactNode[], withoutInitialAnimation: boolean = false): Modal {
-    const modal: Modal = this.props.modales.providerHelper.launchRouteModal(
+    const modal: Modal = this.providerHelper.launchRouteModal(
       location,
       children,
       this.handleModalClose.bind(this),
@@ -486,7 +490,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
   }
 
   private replaceLocationsModals(currentLocation: Location, newLocation: Location, children: React.ReactNode | React.ReactNode[]): Modal {
-    this.props.modales.providerHelper.forceClearModals(currentLocation.state.modalId)
+    this.providerHelper.forceClearModals(currentLocation.state.modalId)
     const modal: Modal = this.launchModal(newLocation, children, true)
 
     return modal
@@ -525,7 +529,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
 
   public render() {
     return (
-      <ModalesScene modales={this.props.modales}>
+      <ModalesScene providerHelper={this.providerHelper}>
         <Switch location={this.baseLocation}>{this.props.children || null}</Switch>
       </ModalesScene>
     )

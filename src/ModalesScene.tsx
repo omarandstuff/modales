@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { Switch } from 'react-router-dom'
-import { ModalesInstance, Modal } from './Modales.types'
+import { Modal } from './Modales.types'
+import ProviderHelper from './ProviderHelper'
 import ModalViewer from './ModalViewer'
 
 type ModalesSceneProps = {
   children?: React.ReactNode | React.ReactNode[]
-  modales: ModalesInstance
+  providerHelper: ProviderHelper
 }
 
 type ModalesSceneState = {
@@ -19,7 +20,7 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
   state = { modals: [], blured: false }
 
   componentDidMount() {
-    this.props.modales.providerHelper.providerCallBack = this.handleModalsUpdate.bind(this)
+    this.props.providerHelper.modalsUpdateCallBack = this.handleModalsUpdate.bind(this)
   }
 
   private handleModalsUpdate(modals: Modal[]) {
@@ -60,7 +61,7 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
           <ModalViewer
             modalId={modal.id}
             key={`modal${modal.id}`}
-            blurEnabled={this.props.modales.providerHelper.blurEnabled}
+            blurEnabled={this.props.providerHelper.blurEnabled}
             background={modal.location.state.background}
             onOutsideClick={modal.onOutsideClick}
             onScape={modal.onScape}
@@ -76,7 +77,7 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
           <ModalViewer
             modalId={modal.id}
             key={`modal${modal.id}`}
-            blurEnabled={this.props.modales.providerHelper.blurEnabled}
+            blurEnabled={this.props.providerHelper.blurEnabled}
             background={modal.background}
             onOutsideClick={modal.onOutsideClick}
             onScape={modal.onScape}
@@ -123,7 +124,7 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
       document.documentElement.classList.add('modal-viewing')
     }
 
-    this.setState({ modals: renderedModals, blured: blurComponentBeneathModals && this.props.modales.providerHelper.blurEnabled })
+    this.setState({ modals: renderedModals, blured: blurComponentBeneathModals && this.props.providerHelper.blurEnabled })
   }
 
   private shouldBlurBeneathModal(modal: Modal) {
