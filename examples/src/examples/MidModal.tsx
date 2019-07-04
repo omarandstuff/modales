@@ -9,7 +9,7 @@ export default class MidModal extends React.Component {
   }
 
   private handleStackAnother(): void {
-    modales.launchModal(<h1>Modal</h1>, (event: MouseEvent): boolean => true, (event: KeyboardEvent): boolean => true)
+    modales.launchModal(<h1>Modal</h1>)
   }
 
   render(): React.ReactNode {

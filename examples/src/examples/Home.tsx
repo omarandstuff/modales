@@ -8,7 +8,7 @@ import './Home.css'
 
 export default class Home extends React.Component {
   private handleShowModal(background?: ModalBackground): void {
-    modales.launchModal(<BigModal />, (event: MouseEvent): boolean => true, (event: KeyboardEvent): boolean => true, background)
+    modales.launchModal(<BigModal />, background)
   }
 
   render(): React.ReactNode {

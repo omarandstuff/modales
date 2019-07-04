@@ -6,7 +6,7 @@ import './ModalRoute.css'
 
 export default class ModalRoute extends React.Component {
   private handleShowModal(): void {
-    modales.launchModal(<MidModal />, (event: MouseEvent): boolean => true, (event: KeyboardEvent): boolean => true)
+    modales.launchModal(<MidModal />)
   }
 
   render(): React.ReactNode {

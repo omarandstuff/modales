@@ -10,7 +10,7 @@ export default class BigModal extends React.Component {
   }
 
   private handleStackAnother(): void {
-    modales.launchModal(<MidModal />, (event: MouseEvent): boolean => true, (event: KeyboardEvent): boolean => true)
+    modales.launchModal(<MidModal />)
   }
 
   render(): React.ReactNode {
