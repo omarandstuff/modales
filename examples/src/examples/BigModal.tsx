@@ -6,11 +6,11 @@ import './BigModal.css'
 
 export default class BigModal extends React.Component {
   private handleCloseModal(): void {
-    modales.providerHelper.popModal()
+    modales.popModal()
   }
 
   private handleStackAnother(): void {
-    modales.providerHelper.launchModal(<MidModal />, (event: MouseEvent): boolean => true, (event: KeyboardEvent): boolean => true)
+    modales.launchModal(<MidModal />, (event: MouseEvent): boolean => true, (event: KeyboardEvent): boolean => true)
   }
 
   render(): React.ReactNode {
