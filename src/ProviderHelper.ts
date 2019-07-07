@@ -12,7 +12,7 @@ export default class ProviderHelper {
   public clearModals(modalId?: number, inclusive?: boolean): void {
     if (this.modals.length > 0) {
       if (inclusive === false) {
-        const modalIndex = this.modals.map(modal => modal.id).indexOf(modalId)
+        const modalIndex: number = this.modals.map((modal: Modal): number => modal.id).indexOf(modalId)
 
         if (modalIndex !== -1) {
           if (modalIndex + 1 < this.modals.length) {
@@ -37,7 +37,7 @@ export default class ProviderHelper {
     let modalsToRange = this.modals.length
 
     if (modalId !== undefined) {
-      const modalIndex = this.modals.map(modal => modal.id).indexOf(modalId)
+      const modalIndex: number = this.modals.map((modal: Modal): number => modal.id).indexOf(modalId)
 
       if (modalIndex !== -1) {
         modalsFromIndex = modalIndex
@@ -105,7 +105,7 @@ export default class ProviderHelper {
     let modalsToPopRange = 1
 
     if (modalId !== undefined) {
-      const modalIndex = this.modals.map(modal => modal.id).indexOf(modalId)
+      const modalIndex: number = this.modals.map((modal: Modal): number => modal.id).indexOf(modalId)
 
       if (modalIndex !== -1) {
         modalsToPopIndex = modalIndex
@@ -120,7 +120,7 @@ export default class ProviderHelper {
     }
     this.modalsUpdateCallBack(this.modals)
 
-    setTimeout(() => {
+    setTimeout((): void => {
       this.modals.splice(modalsToPopIndex, modalsToPopRange)
       this.modalsUpdateCallBack(this.modals)
     }, 350)

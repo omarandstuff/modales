@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { shallow, mount, render } from 'enzyme'
+import { shallow } from 'enzyme'
 import { Location, History, Action } from 'history'
 import { match } from 'react-router'
 
@@ -41,7 +41,7 @@ function generateMatch(params?: {}, path?: string, isExact?: boolean, url?: stri
   }
 }
 
-type ProviderTestInterface = {
+interface ProviderTestInterface {
   baseLocation: Location
   intialId: string
   historyIndex: number
@@ -54,7 +54,7 @@ type ProviderTestInterface = {
 let providerTestInterface: ProviderTestInterface = null
 
 class ModalesProviderX extends ModalesProvider {
-  constructor(props) {
+  public constructor(props) {
     super(props)
 
     providerTestInterface = this.getInterface()
@@ -90,7 +90,7 @@ describe('ModalesProvider', (): void => {
       const modales = new Modales()
 
       const element = React.createElement(ModalesProviderX, { location, history, match, modales: modales })
-      const wrapper = shallow(element)
+      shallow(element)
 
       expect(element.props.location.key).toEqual(providerTestInterface.intialId)
     })

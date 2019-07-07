@@ -17,7 +17,7 @@ export default class Modales {
   private providerHelper: ProviderHelper = null
   private configuration: ModalesConfiguration = null
 
-  constructor(config?: ModalesConfiguration) {
+  public constructor(config?: ModalesConfiguration) {
     this.configuration = config || {}
   }
 
