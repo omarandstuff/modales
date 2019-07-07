@@ -19,13 +19,13 @@ type ModalesProviderState = {
 }
 
 export class ModalesProvider extends React.Component<RouteComponentProps<{}> & ModalesProviderProps, ModalesProviderState> {
-  private baseLocation: Location = null
-  private intialId: string = `@init${new Date().getTime()}`
-  private historyIndex: number = 0
-  private historyOrder: string[] = []
-  private historyMap: { [key: string]: Location } = {}
-  private lastLocation: Location = this.props.location
-  private providerHelper: ProviderHelper = new ProviderHelper()
+  protected baseLocation: Location = null
+  protected intialId: string = `@init${new Date().getTime()}`
+  protected historyIndex: number = 0
+  protected historyOrder: string[] = []
+  protected historyMap: { [key: string]: Location } = {}
+  protected lastLocation: Location = this.props.location
+  protected providerHelper: ProviderHelper = new ProviderHelper()
 
   state = { modals: [], blured: false }
 
