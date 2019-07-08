@@ -310,6 +310,80 @@ describe('ModalesProvider', (): void => {
             expect(testInterface.baseLocation).toBe(instance.props.location)
           })
         })
+
+        describe('and the user selects a location that is some steps forward in the hostory', () => {
+          it('just goes to that location and sets it a s base location', (): void => {
+            const location: Location = generateLocation()
+            const history: History = generateHistory(location)
+            const match: match = generateMatch()
+            const modales: Modales = new Modales()
+
+            const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+            const instance: ModalesProviderX = component.instance() as ModalesProviderX
+            instance.getTestInterface().providerHelper.modalsUpdateCallBack = jest.fn()
+
+            let testInterface: ProviderTestInterface = instance.getTestInterface()
+            instance.setTestInterface({
+              historyMap: {
+                ...testInterface.historyMap,
+                key1: generateLocation('/newPath', 'key1'),
+                key2: generateLocation('/newPath2', 'key2'),
+                key3: generateLocation('/newPath3', 'key3')
+              },
+              historyOrder: testInterface.historyOrder.concat(['key1', 'key2', 'key3'])
+            })
+
+            testInterface = instance.getTestInterface()
+
+            const newLocation: Location = testInterface.historyMap['key2']
+            component.setProps({ location: newLocation, history: generateHistory(newLocation, 'POP') })
+
+            testInterface = instance.getTestInterface()
+
+            expect(testInterface.historyIndex).toEqual(2)
+            expect(testInterface.historyOrder).toEqual([testInterface.intialId, 'key1', 'key2', 'key3'])
+            expect(testInterface.baseLocation).toBe(newLocation)
+          })
+        })
+
+        describe('and the user selects a location that is some steps forward in the hostory and is modal', () => {
+          it('just goes to that location and recreates all the modals in between', (): void => {
+            const location: Location = generateLocation()
+            const history: History = generateHistory(location)
+            const match: match = generateMatch()
+            const modales: Modales = new Modales()
+
+            const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+            const instance: ModalesProviderX = component.instance() as ModalesProviderX
+            instance.getTestInterface().providerHelper.modalsUpdateCallBack = jest.fn()
+
+            let testInterface: ProviderTestInterface = instance.getTestInterface()
+            instance.setTestInterface({
+              historyMap: {
+                ...testInterface.historyMap,
+                key1: generateLocation('/newPath', 'key1', { modal: true }),
+                key2: generateLocation('/newPath2', 'key2', { modal: true }),
+                key3: generateLocation('/newPath3', 'key3', { modal: true })
+              },
+              historyOrder: testInterface.historyOrder.concat(['key1', 'key2', 'key3'])
+            })
+
+            testInterface = instance.getTestInterface()
+
+            const newLocation: Location = testInterface.historyMap['key2']
+            component.setProps({ location: newLocation, history: generateHistory(newLocation, 'POP') })
+
+            testInterface = instance.getTestInterface()
+
+            expect(testInterface.historyIndex).toEqual(2)
+            expect(testInterface.historyOrder).toEqual([testInterface.intialId, 'key1', 'key2', 'key3'])
+            expect(testInterface.baseLocation).toBe(location)
+            expect(testInterface.providerHelper.modals).toMatchObject([
+              { id: 0, type: 'route', location: testInterface.historyMap['key1'] },
+              { id: 1, type: 'route', location: testInterface.historyMap['key2'] }
+            ])
+          })
+        })
       })
 
       describe('A new location REPLACE has come form props', () => {
