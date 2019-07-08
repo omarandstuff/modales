@@ -7,7 +7,7 @@ import { Modal } from './Modales.types'
 import ProviderHelper from './ProviderHelper'
 import ModalesScene from './ModalesScene'
 
-type ModalesProviderProps = {
+export interface ModalesProviderProps extends RouteComponentProps {
   children?: React.ReactNode | React.ReactNode[]
   modales: Modales
   debuggMode?: boolean
@@ -18,7 +18,7 @@ type ModalesProviderState = {
   blured: boolean
 }
 
-export class ModalesProvider extends React.Component<RouteComponentProps<{}> & ModalesProviderProps, ModalesProviderState> {
+export class ModalesProvider extends React.Component<ModalesProviderProps, ModalesProviderState> {
   protected baseLocation: Location = null
   protected intialId: string = `@init${new Date().getTime()}`
   protected historyIndex: number = 0
@@ -29,7 +29,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
 
   state = { modals: [], blured: false }
 
-  constructor(props: RouteComponentProps<{}> & ModalesProviderProps) {
+  constructor(props: ModalesProviderProps) {
     super(props)
 
     if (!props.location.key) {
@@ -64,7 +64,7 @@ export class ModalesProvider extends React.Component<RouteComponentProps<{}> & M
     this.lastLocation = this.baseLocation
   }
 
-  public shouldComponentUpdate(nextProps: RouteComponentProps<{}> & ModalesProviderProps): boolean {
+  public shouldComponentUpdate(nextProps: ModalesProviderProps): boolean {
     const locationProcessed = this.handleHistoryEvent(nextProps)
 
     if (locationProcessed) {
