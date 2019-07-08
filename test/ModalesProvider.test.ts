@@ -217,6 +217,140 @@ describe('ModalesProvider', (): void => {
             expect(providerTestInterface.baseLocation).toBe(instance.props.location)
           })
         })
+
+        describe('and the incoming location is yes a modal', () => {
+          it('leaves the base location alone, launches a modal and kepps track of the modal id in location', (): void => {
+            const location: Location = generateLocation()
+            const history: History = generateHistory(location)
+            const match: match = generateMatch()
+            const modales: Modales = new Modales()
+
+            const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+            const instance: ModalesProviderX = component.instance() as ModalesProviderX
+            providerTestInterface.providerHelper.modalsUpdateCallBack = jest.fn()
+
+            const newLocation: Location = generateLocation('/newPath', 'key1', { modal: true })
+            component.setProps({ location: newLocation, history: generateHistory(newLocation, 'PUSH') })
+            instance.setTestInterface()
+
+            expect(newLocation.state).toEqual({ modalId: 0, modal: true })
+            expect(providerTestInterface.baseLocation).toBe(location)
+            expect(providerTestInterface.providerHelper.modals.length).toEqual(1)
+            expect(providerTestInterface.providerHelper.modals[0]).toMatchObject({ location: instance.props.location })
+          })
+
+          describe('but the route modales are disabled from config', () => {
+            it('forces the new location to be base location', (): void => {
+              const location: Location = generateLocation()
+              const history: History = generateHistory(location)
+              const match: match = generateMatch()
+              const modales: Modales = new Modales({ routeModalsEnabled: false })
+
+              const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+              const instance: ModalesProviderX = component.instance() as ModalesProviderX
+              providerTestInterface.providerHelper.modalsUpdateCallBack = jest.fn()
+
+              const newLocation: Location = generateLocation('/newPath', 'key1', { modal: true })
+              component.setProps({ location: newLocation, history: generateHistory(newLocation, 'PUSH') })
+              instance.setTestInterface()
+
+              expect(providerTestInterface.baseLocation).toBe(newLocation)
+              expect(providerTestInterface.providerHelper.modals.length).toEqual(0)
+            })
+          })
+        })
+      })
+    })
+
+    describe('A new location POP has come form props (The user is messing with the broweser history)', () => {
+      describe('and the incoming location is not a modal', () => {
+        it('uses the new location but leaves the provider in oblivion by seting locationIndex to -1', (): void => {
+          const location: Location = generateLocation()
+          const history: History = generateHistory(location)
+          const match: match = generateMatch()
+          const modales: Modales = new Modales()
+
+          const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+          const instance: ModalesProviderX = component.instance() as ModalesProviderX
+          providerTestInterface.providerHelper.modalsUpdateCallBack = jest.fn()
+
+          const newLocation: Location = generateLocation('/newPath', 'key1')
+          component.setProps({ location: newLocation, history: generateHistory(newLocation, 'POP') })
+          instance.setTestInterface()
+
+          expect(providerTestInterface.historyIndex).toEqual(-1)
+          expect(providerTestInterface.historyOrder.length).toEqual(1)
+          expect(providerTestInterface.historyOrder[0]).toEqual(location.key)
+          expect(providerTestInterface.baseLocation).toBe(instance.props.location)
+        })
+      })
+
+      describe('and the incoming location is yes a modal', () => {
+        it('forces the new location and does the same as if it was not modal', (): void => {
+          const location: Location = generateLocation()
+          const history: History = generateHistory(location)
+          const match: match = generateMatch()
+          const modales: Modales = new Modales()
+
+          const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+          const instance: ModalesProviderX = component.instance() as ModalesProviderX
+          providerTestInterface.providerHelper.modalsUpdateCallBack = jest.fn()
+
+          const newLocation: Location = generateLocation('/newPath', 'key1', { modal: true })
+          component.setProps({ location: newLocation, history: generateHistory(newLocation, 'POP') })
+          instance.setTestInterface()
+
+          expect(newLocation.state.modal).toEqual(false)
+          expect(providerTestInterface.historyIndex).toEqual(-1)
+          expect(providerTestInterface.historyOrder.length).toEqual(1)
+          expect(providerTestInterface.historyOrder[0]).toEqual(location.key)
+          expect(providerTestInterface.baseLocation).toBe(instance.props.location)
+        })
+      })
+    })
+
+    describe('A new location REPLACE has come form props', () => {
+      describe('and the incoming location is not a modal', () => {
+        it('just replaces the base location with thew newone', (): void => {
+          const location: Location = generateLocation()
+          const history: History = generateHistory(location)
+          const match: match = generateMatch()
+          const modales: Modales = new Modales()
+
+          const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+          const instance: ModalesProviderX = component.instance() as ModalesProviderX
+          providerTestInterface.providerHelper.modalsUpdateCallBack = jest.fn()
+
+          const newLocation: Location = generateLocation('/newPath', 'key1')
+          component.setProps({ location: newLocation, history: generateHistory(newLocation, 'REPLACE') })
+          instance.setTestInterface()
+
+          expect(providerTestInterface.historyOrder[0]).toEqual(instance.props.location.key)
+          expect(providerTestInterface.historyMap[newLocation.key]).toBe(instance.props.location)
+          expect(providerTestInterface.baseLocation).toBe(instance.props.location)
+        })
+      })
+
+      describe('and the incoming location is yes a modal', () => {
+        it('forces the new location to not be modal and replace the base location', (): void => {
+          const location: Location = generateLocation()
+          const history: History = generateHistory(location)
+          const match: match = generateMatch()
+          const modales: Modales = new Modales()
+
+          const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+          const instance: ModalesProviderX = component.instance() as ModalesProviderX
+          providerTestInterface.providerHelper.modalsUpdateCallBack = jest.fn()
+
+          const newLocation: Location = generateLocation('/newPath', 'key1', { modal: true })
+          component.setProps({ location: newLocation, history: generateHistory(newLocation, 'REPLACE') })
+          instance.setTestInterface()
+
+          expect(newLocation.state.modal).toEqual(false)
+          expect(providerTestInterface.historyOrder[0]).toEqual(instance.props.location.key)
+          expect(providerTestInterface.historyMap[newLocation.key]).toBe(instance.props.location)
+          expect(providerTestInterface.baseLocation).toBe(instance.props.location)
+        })
       })
     })
   })
