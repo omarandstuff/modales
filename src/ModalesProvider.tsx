@@ -433,17 +433,27 @@ export class ModalesProvider extends React.Component<ModalesProviderProps, Modal
     let lastModalGroupLocation: Location = null
     let lastModalGroupLocationIndex: number = null
 
-    // This will be from base location to known location
+    // This will be from base location + 1 to known location
     for (let i = from; i <= to; i++) {
       const locationToLaunch: Location = this.historyMap[this.historyOrder[i]]
 
-      // We the locations is modal we need to lauch it
+      // If the location is modal we need to launch it
       if (this.isModal(locationToLaunch)) {
         // But if the prospect belongs to a modal group we need to wait until
         // all locations in the group are iterated to lauch just a modal
-        // that they will share, so we just keep tarck of the last found
+        // that they will share, so we just keep track of the last found
         if (locationToLaunch.state.modalGroup !== undefined) {
           if (locationToLaunch.state.modalGroup !== lastModalGroup) {
+            // We found a modal that is not in the last grup found so now
+            // we can laouch the modal group before the new group
+            if (lastModalGroup) {
+              this.rebuildModalGroup(currentLocation, lastModalGroupLocation, lastModalGroupLocationIndex, children)
+
+              lastModalGroup = null
+              lastModalGroupLocation = null
+              lastModalGroupLocationIndex = null
+            }
+
             lastModalGroup = locationToLaunch.state.modalGroup
           }
           lastModalGroupLocation = locationToLaunch
