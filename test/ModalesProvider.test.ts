@@ -94,5 +94,57 @@ describe('ModalesProvider', (): void => {
 
       expect(element.props.location.key).toEqual(providerTestInterface.intialId)
     })
+
+    describe('if the iniital location is set as modal', () => {
+      it('sets it as false since a initial location can only be base location', () => {
+        const location = generateLocation('', { modal: true })
+        const history = generateHistory(location)
+        const match = generateMatch()
+        const modales = new Modales()
+
+        const element = React.createElement(ModalesProviderX, { location, history, match, modales: modales })
+        shallow(element)
+
+        expect(element.props.location.state.modal).toBe(false)
+        expect(element.props.location).toBe(providerTestInterface.baseLocation)
+      })
+    })
+
+    it('connects with the modales passed instance', (): void => {
+      const location = generateLocation()
+      const history = generateHistory(location)
+      const match = generateMatch()
+      const modales = new Modales()
+
+      const connectWithProvider = jest.fn()
+      const connectWithRouter = jest.fn()
+
+      modales.connectWithProvider = connectWithProvider
+      modales.connectWithRouter = connectWithRouter
+
+      const element = React.createElement(ModalesProviderX, { location, history, match, modales: modales })
+      shallow(element)
+
+      expect(connectWithProvider.mock.calls.length).toEqual(1)
+      expect(connectWithProvider.mock.calls[0][0]).toBe(providerTestInterface.providerHelper)
+      expect(connectWithRouter.mock.calls.length).toEqual(1)
+      expect(connectWithRouter.mock.calls[0][0]).toEqual(element.props.location)
+      expect(connectWithRouter.mock.calls[0][1]).toEqual(element.props.history)
+    })
+
+    it('keeps a track of the first location and maps it', (): void => {
+      const location = generateLocation()
+      const history = generateHistory(location)
+      const match = generateMatch()
+      const modales = new Modales()
+
+      const element = React.createElement(ModalesProviderX, { location, history, match, modales: modales })
+      shallow(element)
+
+      const propsLocation = element.props.location
+
+      expect(providerTestInterface.historyOrder[0]).toEqual(propsLocation.key)
+      expect(providerTestInterface.historyMap[propsLocation.key]).toBe(propsLocation)
+    })
   })
 })
