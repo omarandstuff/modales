@@ -63,7 +63,7 @@ class ModalesProviderX extends ModalesProvider {
     providerTestInterface = this.getInterface()
   }
 
-  public setInterface(): void {
+  public setTestInterface(): void {
     providerTestInterface = this.getInterface()
   }
 
@@ -151,52 +151,72 @@ describe('ModalesProvider', (): void => {
     })
   })
 
-  describe('A new location has come form props', () => {
-    describe('and is a diferent pathname', () => {
-      it('scrolls to top', (): void => {
-        const location: Location = generateLocation()
-        const history: History = generateHistory(location)
-        const match: match = generateMatch()
-        const modales: Modales = new Modales()
+  describe('And is sitted in the first baselocation', () => {
+    describe('A new location PUSH has come form props', () => {
+      describe('and is a diferent pathname', () => {
+        it('scrolls to top', (): void => {
+          const location: Location = generateLocation()
+          const history: History = generateHistory(location)
+          const match: match = generateMatch()
+          const modales: Modales = new Modales()
 
-        const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+          const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+          // Shallow provider will not instantiate a ModalesScene so we need to set this
+          providerTestInterface.providerHelper.modalsUpdateCallBack = jest.fn()
 
-        // Shallow provider will not instantiate a ModalesScene so we need to set this
-        providerTestInterface.providerHelper.modalsUpdateCallBack = jest.fn()
+          const scrollToMock: jest.Mock = jest.fn()
+          window.scrollTo = scrollToMock
 
-        const scrollToMock: jest.Mock = jest.fn()
-        window.scrollTo = scrollToMock
+          component.setProps({ location: generateLocation('/newPath', 'key1') })
 
-        component.setProps({ location: generateLocation('/newPath', 'key1') })
+          jest.runAllTimers()
 
-        jest.runAllTimers()
+          expect(scrollToMock.mock.calls.length).toEqual(1)
+        })
 
-        expect(scrollToMock.mock.calls.length).toEqual(1)
-      })
+        it('re-connects with the modales passed instance', (): void => {
+          const location: Location = generateLocation()
+          const history: History = generateHistory(location)
+          const match: match = generateMatch()
+          const modales: Modales = new Modales()
 
-      it('re-connects with the modales passed instance', (): void => {
-        const location: Location = generateLocation()
-        const history: History = generateHistory(location)
-        const match: match = generateMatch()
-        const modales: Modales = new Modales()
+          const connectWithProvider: jest.Mock = jest.fn()
+          const connectWithRouter: jest.Mock = jest.fn()
 
-        const connectWithProvider: jest.Mock = jest.fn()
-        const connectWithRouter: jest.Mock = jest.fn()
+          modales.connectWithProvider = connectWithProvider
+          modales.connectWithRouter = connectWithRouter
 
-        modales.connectWithProvider = connectWithProvider
-        modales.connectWithRouter = connectWithRouter
+          const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+          providerTestInterface.providerHelper.modalsUpdateCallBack = jest.fn()
 
-        const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+          const newLocation: Location = generateLocation('/newPath', 'key1')
 
-        // Shallow provider will not instantiate a ModalesScene so we need to set this
-        providerTestInterface.providerHelper.modalsUpdateCallBack = jest.fn()
+          component.setProps({ location: newLocation })
 
-        const newLocation: Location = generateLocation('/newPath', 'key1')
+          expect(connectWithRouter.mock.calls.length).toEqual(2)
+          expect(connectWithRouter.mock.calls[1][0]).toBe(newLocation)
+        })
 
-        component.setProps({ location: newLocation })
+        describe('and the incoming location is not a modal', () => {
+          it('just pushes the new location ans set it as base location', (): void => {
+            const location: Location = generateLocation()
+            const history: History = generateHistory(location)
+            const match: match = generateMatch()
+            const modales: Modales = new Modales()
 
-        expect(connectWithRouter.mock.calls.length).toEqual(2)
-        expect(connectWithRouter.mock.calls[1][0]).toBe(newLocation)
+            const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+            const instance: ModalesProviderX = component.instance() as ModalesProviderX
+            providerTestInterface.providerHelper.modalsUpdateCallBack = jest.fn()
+
+            const newLocation: Location = generateLocation('/newPath', 'key1')
+            component.setProps({ location: newLocation, history: generateHistory(newLocation, 'PUSH') })
+            instance.setTestInterface()
+
+            expect(providerTestInterface.historyOrder[1]).toEqual(instance.props.location.key)
+            expect(providerTestInterface.historyMap[newLocation.key]).toBe(instance.props.location)
+            expect(providerTestInterface.baseLocation).toBe(instance.props.location)
+          })
+        })
       })
     })
   })

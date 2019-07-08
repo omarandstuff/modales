@@ -312,7 +312,7 @@ export class ModalesProvider extends React.Component<ModalesProviderProps, Modal
 
         // Something is outside our history tracking
         // When pressed the back and forth buttons
-        // on the expolorer after reload the page
+        // on the explorer after reload the page
         this.historyIndex = -1
         this.baseLocation = newLocation
       }
