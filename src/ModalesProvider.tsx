@@ -140,9 +140,9 @@ export class ModalesProvider extends React.Component<ModalesProviderProps, Modal
       })
 
       // If you reload the page and start pushing back and forth in the explorer
-      // We can not be sure about the context of these locations so we just set them
-      // as base location and set the index to -1 to known we are in one of them
-      // then we push a location and use it as first location
+      // We can not be sure about the context of these locations so we just set
+      // the locationIndex to -1 (See POP event) to known we are in one of them (unknown location)
+      // then we push thie new location and use the unknown location as first visited location
       if (this.historyIndex === -1) {
         this.historyOrder.push(this.baseLocation.key)
         this.historyMap[this.baseLocation.key] = this.baseLocation
@@ -325,15 +325,25 @@ export class ModalesProvider extends React.Component<ModalesProviderProps, Modal
 
           // We just replace the current location for the new one
           // and set the base location as it
-          delete this.historyMap[currentLocationKey]
-          this.historyOrder[this.historyIndex] = newLocation.key
+          if (this.historyIndex === -1) {
+            this.historyOrder.push(newLocation.key)
+            this.historyIndex = 0
+          } else {
+            delete this.historyMap[currentLocationKey]
+            this.historyOrder[this.historyIndex] = newLocation.key
+          }
           this.historyMap[newLocation.key] = newLocation
           this.baseLocation = newLocation
         } else {
           // We replace the current location in the history
-          // for the new one withot setting the base location
-          delete this.historyMap[currentLocationKey]
-          this.historyOrder[this.historyIndex] = newLocation.key
+          // with the new one withot setting the base location
+          if (this.historyIndex === -1) {
+            this.historyOrder.push(newLocation.key)
+            this.historyIndex = 0
+          } else {
+            delete this.historyMap[currentLocationKey]
+            this.historyOrder[this.historyIndex] = newLocation.key
+          }
           this.historyMap[newLocation.key] = newLocation
 
           // If the curret loction is part of a modal group we need to know
@@ -381,8 +391,15 @@ export class ModalesProvider extends React.Component<ModalesProviderProps, Modal
 
         this.wipeModalIdFromDismissedModals(0, this.historyOrder.length)
 
-        delete this.historyMap[currentLocationKey]
-        this.historyOrder[this.historyIndex] = newLocation.key
+        // Replace locations can then be a known location now
+        if (this.historyIndex === -1) {
+          this.historyOrder.push(newLocation.key)
+          this.historyIndex = 0
+        } else {
+          delete this.historyMap[currentLocationKey]
+          this.historyOrder[this.historyIndex] = newLocation.key
+        }
+
         this.historyMap[newLocation.key] = newLocation
         this.baseLocation = newLocation
       }
