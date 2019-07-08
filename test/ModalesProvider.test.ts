@@ -7,8 +7,11 @@ import Modales from '../src/Modales'
 import ProviderHelper from '../src/ProviderHelper'
 import { ModalesProvider } from '../src/ModalesProvider'
 
-function generateLocation(pathname?: string, state?: {}): Location {
+jest.useFakeTimers()
+
+function generateLocation(pathname?: string, key?: string, state?: {}): Location {
   return {
+    key: key,
     pathname: pathname || '',
     state: state || {},
     search: '',
@@ -97,7 +100,7 @@ describe('ModalesProvider', (): void => {
 
     describe('if the iniital location is set as modal', () => {
       it('sets it as false since a initial location can only be base location', () => {
-        const location = generateLocation('', { modal: true })
+        const location = generateLocation('', '', { modal: true })
         const history = generateHistory(location)
         const match = generateMatch()
         const modales = new Modales()
@@ -145,6 +148,32 @@ describe('ModalesProvider', (): void => {
 
       expect(providerTestInterface.historyOrder[0]).toEqual(propsLocation.key)
       expect(providerTestInterface.historyMap[propsLocation.key]).toBe(propsLocation)
+    })
+  })
+
+  describe('A new location has come form props', () => {
+    describe('and is a diferent pathname', () => {
+      it('scrolls to top', (): void => {
+        const location = generateLocation()
+        const history = generateHistory(location)
+        const match = generateMatch()
+        const modales = new Modales()
+
+        const element = React.createElement(ModalesProviderX, { location, history, match, modales: modales })
+        const component = shallow(element)
+
+        // Shallow provider will not instantiate a ModalesScene so we need to set this
+        providerTestInterface.providerHelper.modalsUpdateCallBack = jest.fn()
+
+        const scrollToMock = jest.fn()
+        window.scrollTo = scrollToMock
+
+        component.setProps({ location: generateLocation('/newPath', 'key1') })
+
+        jest.runAllTimers()
+
+        expect(scrollToMock.mock.calls.length).toEqual(1)
+      })
     })
   })
 })
