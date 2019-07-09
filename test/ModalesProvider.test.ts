@@ -294,6 +294,42 @@ describe('ModalesProvider', (): void => {
             expect(testInterface.providerHelper.modals).toEqual([])
           })
         })
+
+        describe('and there are some location ahead in history', () => {
+          it('just pushes the new location, set it as base location and cleans the locations ahead', (): void => {
+            const location: Location = generateLocation()
+            const history: History = generateHistory(location)
+            const match: match = generateMatch()
+            const modales: Modales = new Modales()
+
+            const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
+            const instance: ModalesProviderX = component.instance() as ModalesProviderX
+            instance.getTestInterface().providerHelper.modalsUpdateCallBack = jest.fn()
+
+            let testInterface: ProviderTestInterface = instance.getTestInterface()
+            instance.setTestInterface({
+              historyMap: {
+                ...testInterface.historyMap,
+                key1: generateLocation('/newPath', 'key1', { modal: true }),
+                key2: generateLocation('/newPath2', 'key2', { modal: true }),
+                key3: generateLocation('/newPath3', 'key3', { modal: true })
+              },
+              historyOrder: testInterface.historyOrder.concat(['key1', 'key2', 'key3'])
+            })
+
+            testInterface = instance.getTestInterface()
+
+            const newLocation: Location = generateLocation('/newPath4', 'key4')
+            component.setProps({ location: newLocation, history: generateHistory(newLocation, 'PUSH') })
+
+            testInterface = instance.getTestInterface()
+
+            expect(testInterface.historyOrder.length).toEqual(2)
+            expect(testInterface.historyOrder[1]).toEqual(instance.props.location.key)
+            expect(testInterface.historyMap[newLocation.key]).toBe(instance.props.location)
+            expect(testInterface.baseLocation).toBe(instance.props.location)
+          })
+        })
       })
 
       describe('A new location POP has come form props (The user is messing with the broweser history)', () => {
