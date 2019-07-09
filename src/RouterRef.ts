@@ -15,7 +15,7 @@ export default class RouterRef {
 
   public isModalLocation(location?: Location): boolean {
     const actualLocation = location || this.currectLocation
-    return actualLocation.state && actualLocation.state.modal
+    return !!actualLocation.state && !!actualLocation.state.modal
   }
 
   public go(n: number): void {
@@ -34,7 +34,7 @@ export default class RouterRef {
     this.historyRef.push(path, state)
   }
 
-  public replace(path: string, state: {}): void {
+  public replace(path: string, state?: {}): void {
     this.historyRef.replace(path, state)
   }
 }
