@@ -10,29 +10,22 @@ export default class ProviderHelper {
   private currentID: number = 0
 
   public clearModals(modalId?: number, inclusive?: boolean): void {
-    if (this.modals.length > 0) {
-      if (inclusive === false) {
-        const modalIndex: number = this.modals.map((modal: Modal): number => modal.id).indexOf(modalId)
+    if (inclusive === false) {
+      const modalIndex: number = this.modals.map((modal: Modal): number => modal.id).indexOf(modalId)
 
-        if (modalIndex !== -1) {
-          if (modalIndex + 1 < this.modals.length) {
-            this.popModal(this.modals[modalIndex + 1].id)
-          }
-        } else {
-          return // Throw something happened
+      if (modalIndex !== -1) {
+        if (modalIndex + 1 < this.modals.length) {
+          this.popModal(this.modals[modalIndex + 1].id)
         }
       } else {
-        this.popModal(modalId || this.modals[0].id)
+        return // Throw something happened
       }
+    } else {
+      this.popModal(modalId || this.modals[0].id)
     }
   }
 
-  public isModalLocation(location: Location): boolean {
-    const actualLocation = location
-    return actualLocation.state && actualLocation.state.modal
-  }
-
-  public forceClearModals(modalId?: number): void {
+  public forceClearModals(modalId?: number, inclusive?: boolean): void {
     let modalsFromIndex = 0
     let modalsToRange = this.modals.length
 
@@ -40,7 +33,7 @@ export default class ProviderHelper {
       const modalIndex: number = this.modals.map((modal: Modal): number => modal.id).indexOf(modalId)
 
       if (modalIndex !== -1) {
-        modalsFromIndex = modalIndex
+        modalsFromIndex = inclusive === false ? modalIndex + 1 : modalIndex
         modalsToRange = this.modals.length - modalsFromIndex
       } else {
         return // should throw, something is wrong

@@ -88,7 +88,13 @@ export class ModalesProvider extends React.Component<ModalesProviderProps, Modal
   }
 
   private areInTheSameModalGroup(left: Location, right: Location): boolean {
-    return left.state && left.state.modalGroup !== undefined && right.state && right.state.modalGroup && left.state.modalGroup === right.state.modalGroup
+    return (
+      left.state &&
+      left.state.modalGroup !== undefined &&
+      right.state &&
+      right.state.modalGroup !== undefined &&
+      left.state.modalGroup === right.state.modalGroup
+    )
   }
 
   private handleModalClose(): void {
@@ -166,7 +172,11 @@ export class ModalesProvider extends React.Component<ModalesProviderProps, Modal
             // in the same modal
             this.resetLocationModalGroupId(this.historyIndex - 1, 0, newLocation, modal.id)
           } else {
-            // If they are not in the same grouo just lauch a new one
+            // It an be the case that there are some custom modals on the top of the current one
+            // We need to get rid of them before lauching the new one
+            this.providerHelper.forceClearModals(currentLocation.state.modalId, false)
+
+            // If they are not in the same group just lauch a new one
             this.launchModal(newLocation, children)
           }
         } else {
@@ -280,7 +290,7 @@ export class ModalesProvider extends React.Component<ModalesProviderProps, Modal
           this.historyIndex = knownLocationIndex
           this.baseLocation = newBaseLocation
         } else {
-          // If the know location is not a modal then is a base location
+          // If the known location is not a modal then is a base location
           // If is the same base location we had we soft dismiss all modals
           // if not we force remove them to give the user the feelong of visiting a new page
           if (this.baseLocation.key === knownLocation.key) {
@@ -291,8 +301,8 @@ export class ModalesProvider extends React.Component<ModalesProviderProps, Modal
 
           this.wipeModalIdFromDismissedModals(0, this.historyOrder.length)
 
-          // Also we set the new locationa s the new location to keep previous modifications
-          // When passing to Modal bridge
+          // Also we set the new locationa as the new location to keep previous modifications
+          // When passing to Modal Scene
           newLocation = knownLocation
 
           this.historyIndex = knownLocationIndex
@@ -336,14 +346,9 @@ export class ModalesProvider extends React.Component<ModalesProviderProps, Modal
           this.baseLocation = newLocation
         } else {
           // We replace the current location in the history
-          // with the new one withot setting the base location
-          if (this.historyIndex === -1) {
-            this.historyOrder.push(newLocation.key)
-            this.historyIndex = 0
-          } else {
-            delete this.historyMap[currentLocationKey]
-            this.historyOrder[this.historyIndex] = newLocation.key
-          }
+          // with the new one without setting the base location
+          delete this.historyMap[currentLocationKey]
+          this.historyOrder[this.historyIndex] = newLocation.key
           this.historyMap[newLocation.key] = newLocation
 
           // If the curret loction is part of a modal group we need to know
@@ -373,7 +378,7 @@ export class ModalesProvider extends React.Component<ModalesProviderProps, Modal
                 this.resetLocationModalGroupId(this.historyIndex - 2, 0, currentLocation, modal.id)
                 // Since this part of the modal groups is not in scope (are after the new location)
                 // We set them as a not launched modals
-                this.resetLocationModalGroupId(this.historyIndex + 1, 0, this.historyMap[this.historyOrder.length], undefined)
+                this.resetLocationModalGroupId(this.historyIndex + 1, this.historyOrder.length, this.historyMap[this.historyOrder.length], undefined)
               }
 
               // Now that we do the trick of the previous group modal we hard lauch the replacement
