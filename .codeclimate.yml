@@ -11,7 +11,7 @@ checks:
       threshold: 1500
   method-complexity:
     config:
-      threshold: 7
+      threshold: 30
   method-count:
     config:
       threshold: 200
@@ -20,7 +20,7 @@ checks:
       threshold: 600
   nested-control-flow:
     config:
-      threshold: 6
+      threshold: 10
   return-statements:
     config:
       threshold: 5
