@@ -2,28 +2,29 @@ import * as React from 'react'
 
 import './ModalViewer.css'
 
-type Props = {
+export type ModalViewerProps = {
   modalId: number
-  actAsBlur: boolean
-  blurEnabled: boolean
-  closed: boolean
-  onOutsideClick: (event: Event) => void
-  onScape: (event: Event) => void
-  withOutInitialAnimation: boolean
+  background?: 'transparent' | 'translucent' | 'blured'
+  actAsBlur?: boolean
+  blurEnabled?: boolean
+  closed?: boolean
+  onOutsideClick?: (event: Event) => void
+  onScape?: (event: Event) => void
+  withOutInitialAnimation?: boolean
 } & Partial<DefaultProps>
 
 type DefaultProps = {
   background: 'transparent' | 'translucent' | 'blured'
 }
 
-export default class ModalViewer extends React.Component<Props> {
+export default class ModalViewer extends React.Component<ModalViewerProps> {
   static defaultProps: DefaultProps = {
     background: 'translucent'
   }
 
   static selfStack: number[] = []
 
-  constructor(props: Props) {
+  constructor(props: ModalViewerProps) {
     super(props)
 
     // Kepp track of the modal being on top so the scape event is only relevant to it
