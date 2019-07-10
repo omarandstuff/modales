@@ -30,3 +30,6 @@ checks:
   identical-code:
     config:
       threshold: 80
+exclude_paths:
+- test/*
+- examples/*
