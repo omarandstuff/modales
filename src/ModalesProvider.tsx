@@ -13,12 +13,7 @@ export interface ModalesProviderProps extends RouteComponentProps {
   debuggMode?: boolean
 }
 
-type ModalesProviderState = {
-  modals: Modal[]
-  blured: boolean
-}
-
-export class ModalesProvider extends React.Component<ModalesProviderProps, ModalesProviderState> {
+export class ModalesProvider extends React.Component<ModalesProviderProps> {
   protected baseLocation: Location = null
   protected intialId: string = `@init${new Date().getTime()}`
   protected historyIndex: number = 0
@@ -26,8 +21,6 @@ export class ModalesProvider extends React.Component<ModalesProviderProps, Modal
   protected historyMap: { [key: string]: Location } = {}
   protected lastLocation: Location = this.props.location
   protected providerHelper: ProviderHelper = new ProviderHelper()
-
-  state = { modals: [], blured: false }
 
   constructor(props: ModalesProviderProps) {
     super(props)

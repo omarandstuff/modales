@@ -1,7 +1,7 @@
 $blur-speed: 0.2s;
 $blur-density: 5px;
 $modal-background-color: black;
-$modal-blured-opacity: 0.5;
+$modal-blurred-opacity: 0.5;
 $modal-translucent-opacity: 0.8;
 $modal-animation-duration: 0.2s;
 
@@ -55,7 +55,7 @@ body.modal-viewing {
     transition: filter $blur-speed;
   }
 
-  &.blured {
+  &.blurred {
     > :first-child {
       filter: blur($blur-density);
     }
@@ -76,9 +76,9 @@ body.modal-viewing {
     filter: blur($blur-density);
   }
 
-  &.blured {
+  &.blurred {
     > .background {
-      background-color: rgba($modal-background-color, $modal-blured-opacity);
+      background-color: rgba($modal-background-color, $modal-blurred-opacity);
     }
   }
 

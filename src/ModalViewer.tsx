@@ -1,10 +1,11 @@
 import * as React from 'react'
+import { ModalBackground } from './Modales.types'
 
 import './ModalViewer.css'
 
 export type ModalViewerProps = {
   modalId: number
-  background?: 'transparent' | 'translucent' | 'blured'
+  background?: ModalBackground
   actAsBlur?: boolean
   blurEnabled?: boolean
   closed?: boolean
@@ -14,7 +15,7 @@ export type ModalViewerProps = {
 } & Partial<DefaultProps>
 
 type DefaultProps = {
-  background: 'transparent' | 'translucent' | 'blured'
+  background: ModalBackground
 }
 
 export default class ModalViewer extends React.Component<ModalViewerProps> {
@@ -59,7 +60,7 @@ export default class ModalViewer extends React.Component<ModalViewerProps> {
   }
 
   public render() {
-    const background = this.props.background === 'blured' ? (this.props.blurEnabled ? 'blured' : 'translucent') : this.props.background
+    const background = this.props.background === 'blurred' ? (this.props.blurEnabled ? 'blurred' : 'translucent') : this.props.background
     const classNames = [
       'modal-viewer',
       this.props.closed ? 'closed' : null,

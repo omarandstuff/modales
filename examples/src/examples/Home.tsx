@@ -42,7 +42,7 @@ export default class Home extends React.Component {
         <section>
           <p>By default all modals background will be "translucent" but you can chouse between additional types</p>
           <button onClick={this.handleShowModal.bind(this, 'transparent')}>Show transparent background modal</button>
-          <button onClick={this.handleShowModal.bind(this, 'blured')}>Show blured background modal</button>
+          <button onClick={this.handleShowModal.bind(this, 'blurred')}>Show blurred background modal</button>
         </section>
       </div>
     )

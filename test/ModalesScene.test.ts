@@ -21,7 +21,7 @@ describe('ModalesScene', (): void => {
   })
 
   describe('modalsUpdateCallBack', () => {
-    it('react to modal changes and sets special blured classes if needed', () => {
+    it('react to modal changes and sets special blurred classes if needed', () => {
       const providerHelper: ProviderHelper = new ProviderHelper()
 
       const component: ShallowWrapper<ModalesSceneProps> = shallow(React.createElement(ModalesScene, { providerHelper }))
@@ -41,14 +41,14 @@ describe('ModalesScene', (): void => {
       expect(derivedProps.children[1][1].props).toMatchObject({ background: 'transparent' })
       expect(derivedProps.className).toEqual('modales-scene')
 
-      providerHelper.launchModal('Content', 'blured', jest.fn(), jest.fn())
+      providerHelper.launchModal('Content', 'blurred', jest.fn(), jest.fn())
       derivedProps = component.props()
 
       expect(derivedProps.children[1].length).toEqual(3)
       expect(derivedProps.children[1][0].props).toMatchObject({ background: 'translucent', actAsBlur: true })
       expect(derivedProps.children[1][1].props).toMatchObject({ background: 'transparent', actAsBlur: true })
-      expect(derivedProps.children[1][2].props).toMatchObject({ background: 'blured' })
-      expect(derivedProps.className).toEqual('modales-scene blured')
+      expect(derivedProps.children[1][2].props).toMatchObject({ background: 'blurred' })
+      expect(derivedProps.className).toEqual('modales-scene blurred')
     })
 
     describe('modals are being close', () => {
@@ -57,9 +57,9 @@ describe('ModalesScene', (): void => {
 
         const component: ShallowWrapper<ModalesSceneProps> = shallow(React.createElement(ModalesScene, { providerHelper }))
 
-        providerHelper.launchRouteModal(generateLocation('', '', { background: 'blured' }), 'Content', jest.fn(), jest.fn(), false)
+        providerHelper.launchRouteModal(generateLocation('', '', { background: 'blurred' }), 'Content', jest.fn(), jest.fn(), false)
         providerHelper.launchModal('Content', 'transparent', jest.fn(), jest.fn())
-        providerHelper.launchModal('Content', 'blured', jest.fn(), jest.fn())
+        providerHelper.launchModal('Content', 'blurred', jest.fn(), jest.fn())
 
         providerHelper.clearModals()
 

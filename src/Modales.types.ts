@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Location } from 'history'
 
-export type ModalBackground = 'transparent' | 'translucent' | 'blured'
+export type ModalBackground = 'transparent' | 'translucent' | 'blurred'
 
 export interface Modal {
   id: number
