@@ -1,6 +1,6 @@
 {
   "name": "modales",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Router and modals advanced system",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
