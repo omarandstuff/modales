@@ -20,8 +20,8 @@ describe('ModalesScene', (): void => {
     })
   })
 
-  describe('modalsUpdateCallBack', () => {
-    it('react to modal changes and sets special blurred classes if needed', () => {
+  describe('modalsUpdateCallBack', (): void => {
+    it('react to modal changes and sets special blurred classes if needed', (): void => {
       const providerHelper: ProviderHelper = new ProviderHelper()
 
       const component: ShallowWrapper<ModalesSceneProps> = shallow(React.createElement(ModalesScene, { providerHelper }))
@@ -51,8 +51,8 @@ describe('ModalesScene', (): void => {
       expect(derivedProps.className).toEqual('modales-scene blurred')
     })
 
-    describe('modals are being close', () => {
-      it('setsthem as close, pass the time and then they are gone', () => {
+    describe('modals are being close', (): void => {
+      it('setsthem as close, pass the time and then they are gone', (): void => {
         const providerHelper: ProviderHelper = new ProviderHelper()
 
         const component: ShallowWrapper<ModalesSceneProps> = shallow(React.createElement(ModalesScene, { providerHelper }))

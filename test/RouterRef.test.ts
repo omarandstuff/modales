@@ -34,7 +34,7 @@ describe('RouterRef', (): void => {
   })
 
   describe('.isModalLocation', (): void => {
-    describe('a location is passed as argument', () => {
+    describe('a location is passed as argument', (): void => {
       it('returns true if the location has a state property modal as true or otherwise false', (): void => {
         const location: Location = generateLocation()
         const history: History = generateHistory()
@@ -46,7 +46,7 @@ describe('RouterRef', (): void => {
       })
     })
 
-    describe('a location is not passed as argument', () => {
+    describe('a location is not passed as argument', (): void => {
       it('returns true if the location that was provider in constructor has a state property modal as true or otherwise false', (): void => {
         let location: Location = generateLocation('/path', 'key', { modal: true })
         const history: History = generateHistory()

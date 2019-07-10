@@ -9,8 +9,8 @@ const listeners = []
 const realEventListener: typeof document.addEventListener = document.addEventListener
 const realRemoveAddEventListener: typeof document.addEventListener = document.removeEventListener
 
-function callListeners() {
-  listeners.forEach((listener: jest.Mock) => {
+function callListeners(): void {
+  listeners.forEach((listener: jest.Mock): void => {
     listener({ key: 'Escape' })
   })
 }

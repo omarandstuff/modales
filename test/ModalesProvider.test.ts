@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { shallow, ShallowWrapper } from 'enzyme'
 import { Location, History } from 'history'
-import { match } from 'react-router'
+import { match as Match } from 'react-router'
 
 import Modales from '../src'
 import ModalesProviderX, { ProviderTestInterface } from './helpers/ModalesProviderX'
@@ -18,7 +18,7 @@ describe('ModalesProvider', (): void => {
     it('sets an initial location id with a random one', (): void => {
       const location: Location = generateLocation()
       const history: History = generateHistory(location)
-      const match: match = generateMatch()
+      const match: Match = generateMatch()
       const modales: Modales = new Modales()
 
       const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -27,11 +27,11 @@ describe('ModalesProvider', (): void => {
       expect(instance.props.location.key).toEqual(instance.getTestInterface().intialId)
     })
 
-    describe('if the iniital location is set as modal', () => {
-      it('sets it as false since a initial location can only be base location', () => {
+    describe('if the iniital location is set as modal', (): void => {
+      it('sets it as false since a initial location can only be base location', (): void => {
         const location: Location = generateLocation('', '', { modal: true })
         const history: History = generateHistory(location)
-        const match: match = generateMatch()
+        const match: Match = generateMatch()
         const modales: Modales = new Modales()
 
         const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -45,7 +45,7 @@ describe('ModalesProvider', (): void => {
     it('connects with the modales passed instance', (): void => {
       const location: Location = generateLocation()
       const history: History = generateHistory(location)
-      const match: match = generateMatch()
+      const match: Match = generateMatch()
       const modales: Modales = new Modales()
 
       const connectWithProvider: jest.Mock = jest.fn()
@@ -67,7 +67,7 @@ describe('ModalesProvider', (): void => {
     it('keeps a track of the first location and maps it', (): void => {
       const location: Location = generateLocation()
       const history: History = generateHistory(location)
-      const match: match = generateMatch()
+      const match: Match = generateMatch()
       const modales: Modales = new Modales()
 
       const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -81,13 +81,13 @@ describe('ModalesProvider', (): void => {
     })
   })
 
-  describe('Location prop changes', () => {
-    describe('And is sitted in the first baselocation', () => {
-      describe('A new location PUSH has come form props', () => {
+  describe('Location prop changes', (): void => {
+    describe('And is sitted in the first baselocation', (): void => {
+      describe('A new location PUSH has come form props', (): void => {
         it('scrolls to top', (): void => {
           const location: Location = generateLocation()
           const history: History = generateHistory(location)
-          const match: match = generateMatch()
+          const match: Match = generateMatch()
           const modales: Modales = new Modales()
 
           const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -108,7 +108,7 @@ describe('ModalesProvider', (): void => {
         it('re-connects with the modales passed instance', (): void => {
           const location: Location = generateLocation()
           const history: History = generateHistory(location)
-          const match: match = generateMatch()
+          const match: Match = generateMatch()
           const modales: Modales = new Modales()
 
           const connectWithProvider: jest.Mock = jest.fn()
@@ -129,11 +129,11 @@ describe('ModalesProvider', (): void => {
           expect(connectWithRouter.mock.calls[1][0]).toBe(newLocation)
         })
 
-        describe('and the incoming location is not a modal', () => {
+        describe('and the incoming location is not a modal', (): void => {
           it('just pushes the new location and set it as base location', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -151,11 +151,11 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and the incoming location is yes a modal', () => {
+        describe('and the incoming location is yes a modal', (): void => {
           it('leaves the base location alone, launches a modal and kepps track of the modal id in location', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -173,11 +173,11 @@ describe('ModalesProvider', (): void => {
             expect(testInterface.providerHelper.modals[0]).toMatchObject({ location: instance.props.location })
           })
 
-          describe('but the route modales are disabled from config', () => {
+          describe('but the route modales are disabled from config', (): void => {
             it('forces the new location to be base location', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales({ routeModalsEnabled: false })
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -195,11 +195,11 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and there are custom modals launched', () => {
+        describe('and there are custom modals launched', (): void => {
           it('just pushes the new location, set it as base location and cleans up any open modal', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -228,11 +228,11 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and there are some location ahead in history', () => {
+        describe('and there are some location ahead in history', (): void => {
           it('just pushes the new location, set it as base location and cleans the locations ahead', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -265,12 +265,12 @@ describe('ModalesProvider', (): void => {
         })
       })
 
-      describe('A new location POP has come form props (The user is messing with the broweser history)', () => {
-        describe('and the incoming location is not a modal', () => {
+      describe('A new location POP has come form props (The user is messing with the broweser history)', (): void => {
+        describe('and the incoming location is not a modal', (): void => {
           it('uses the new location but leaves the provider in oblivion by seting historyIndex to -1', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -289,11 +289,11 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and the incoming location is yes a modal', () => {
+        describe('and the incoming location is yes a modal', (): void => {
           it('forces the new location and does the same as if it was not modal', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -313,11 +313,11 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and the user selects a location that is some steps forward in the hostory', () => {
+        describe('and the user selects a location that is some steps forward in the hostory', (): void => {
           it('just goes to that location and sets it a s base location', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -347,11 +347,11 @@ describe('ModalesProvider', (): void => {
             expect(testInterface.baseLocation).toBe(newLocation)
           })
 
-          describe('and there are modals in between', () => {
+          describe('and there are modals in between', (): void => {
             it('just goes to that location and does not recreate modals', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -392,11 +392,11 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and the user selects a location that is some steps forward in the hostory and is modal', () => {
+        describe('and the user selects a location that is some steps forward in the hostory and is modal', (): void => {
           it('recreates all the modals in between and the target one', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -430,11 +430,11 @@ describe('ModalesProvider', (): void => {
             ])
           })
 
-          describe('And there are custom modals laucnhed', () => {
+          describe('And there are custom modals laucnhed', (): void => {
             it('recreates all the modals in between and the target one, and cleans up any custom modals', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -469,11 +469,11 @@ describe('ModalesProvider', (): void => {
             })
           })
 
-          describe('and the modals in between are in a modal group', () => {
+          describe('and the modals in between are in a modal group', (): void => {
             it('just recreates a modal and sits on the target one', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -504,11 +504,11 @@ describe('ModalesProvider', (): void => {
               expect(testInterface.providerHelper.modals).toMatchObject([{ id: 0, type: 'route', location: testInterface.historyMap['key2'] }])
             })
 
-            describe('and there are several groups in between', () => {
+            describe('and there are several groups in between', (): void => {
               it('just recreates groups stack in the last modal in that group and sitting on the target one', (): void => {
                 const location: Location = generateLocation()
                 const history: History = generateHistory(location)
-                const match: match = generateMatch()
+                const match: Match = generateMatch()
                 const modales: Modales = new Modales()
 
                 const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -545,11 +545,11 @@ describe('ModalesProvider', (): void => {
               })
             })
 
-            describe('and there are several modals and "normal" routes in between', () => {
+            describe('and there are several modals and "normal" routes in between', (): void => {
               it('sits on the last normal route as base and recreates from there', (): void => {
                 const location: Location = generateLocation()
                 const history: History = generateHistory(location)
-                const match: match = generateMatch()
+                const match: Match = generateMatch()
                 const modales: Modales = new Modales()
 
                 const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -586,12 +586,12 @@ describe('ModalesProvider', (): void => {
         })
       })
 
-      describe('A new location REPLACE has come form props', () => {
-        describe('and the incoming location is not a modal', () => {
+      describe('A new location REPLACE has come form props', (): void => {
+        describe('and the incoming location is not a modal', (): void => {
           it('just replaces the base location with thew newone', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -609,11 +609,11 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and the incoming location is yes a modal', () => {
+        describe('and the incoming location is yes a modal', (): void => {
           it('forces the new location to not be modal and replace the base location', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -634,13 +634,13 @@ describe('ModalesProvider', (): void => {
       })
     })
 
-    describe('And is sitted in an unknown location (index -1)', () => {
-      describe('A new location PUSH has come form props', () => {
-        describe('and the incoming location is not a modal', () => {
+    describe('And is sitted in an unknown location (index -1)', (): void => {
+      describe('A new location PUSH has come form props', (): void => {
+        describe('and the incoming location is not a modal', (): void => {
           it('sets the unknown location as base location and pushes the newone', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -662,11 +662,11 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and the incoming location is yes a modal', () => {
+        describe('and the incoming location is yes a modal', (): void => {
           it('leaves the base location alone, launches a modal and kepps track of the modal id in location', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -691,12 +691,12 @@ describe('ModalesProvider', (): void => {
         })
       })
 
-      describe('A new location POP has come form props (The user is messing with the broweser history... again)', () => {
-        describe('and the incoming location is not a modal', () => {
+      describe('A new location POP has come form props (The user is messing with the broweser history... again)', (): void => {
+        describe('and the incoming location is not a modal', (): void => {
           it('uses the new location but keeps the provider in oblivion leaving the historyIndex to -1', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -718,11 +718,11 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and the incoming location is yes a modal', () => {
+        describe('and the incoming location is yes a modal', (): void => {
           it('forces the new location and does the same as if it was not modal', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -746,12 +746,12 @@ describe('ModalesProvider', (): void => {
         })
       })
 
-      describe('A new location REPLACE has come form props', () => {
-        describe('and the incoming location is not a modal', () => {
+      describe('A new location REPLACE has come form props', (): void => {
+        describe('and the incoming location is not a modal', (): void => {
           it('just replaces the base location and takes the provider out of oblivion', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -774,11 +774,11 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and the incoming location is yes a modal', () => {
+        describe('and the incoming location is yes a modal', (): void => {
           it('forces the new location to not be modal and replace the base location', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -804,13 +804,13 @@ describe('ModalesProvider', (): void => {
       })
     })
 
-    describe('And is sitted in a modal in the middle of some locations', () => {
-      describe('A new location PUSH has come form props', () => {
-        describe('and the incoming location is not a modal', () => {
+    describe('And is sitted in a modal in the middle of some locations', (): void => {
+      describe('A new location PUSH has come form props', (): void => {
+        describe('and the incoming location is not a modal', (): void => {
           it('sets the incoming location as base location as force dismisses all modals', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -833,11 +833,11 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and the incoming location is yes a modal', () => {
+        describe('and the incoming location is yes a modal', (): void => {
           it('leaves the base location alone, launches another modal and kepps track of the modal id in location', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -860,11 +860,11 @@ describe('ModalesProvider', (): void => {
             ])
           })
 
-          describe('and the incoming location is yes a modal and in the same group', () => {
+          describe('and the incoming location is yes a modal and in the same group', (): void => {
             it('leaves the base location alone, launches another modal and replaces the modal and sets the modalgroup', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -886,11 +886,11 @@ describe('ModalesProvider', (): void => {
             })
           })
 
-          describe('and there are custom modals launched', () => {
+          describe('and there are custom modals launched', (): void => {
             it('just lauches the new location modal and cleans up any open modal', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -927,13 +927,13 @@ describe('ModalesProvider', (): void => {
         })
       })
 
-      describe('A new location POP has come form props (The user is messing with the broweser history)', () => {
-        describe('and the incoming location is not a modal', () => {
-          describe('and is behind the current location', () => {
+      describe('A new location POP has come form props (The user is messing with the broweser history)', (): void => {
+        describe('and the incoming location is not a modal', (): void => {
+          describe('and is behind the current location', (): void => {
             it('soft dismisses the modal and sits on the new location', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -961,11 +961,11 @@ describe('ModalesProvider', (): void => {
             })
           })
 
-          describe('and is front the current location', () => {
+          describe('and is front the current location', (): void => {
             it('force dismisses the modal and sits on the new location', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -1001,11 +1001,11 @@ describe('ModalesProvider', (): void => {
             })
           })
 
-          describe('and is behind the current location but there is another normal one in between', () => {
+          describe('and is behind the current location but there is another normal one in between', (): void => {
             it('force dismisses the modal and sits on the new location', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -1043,12 +1043,12 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and the incoming location is yes a modal', () => {
-          describe('and is behind the current location', () => {
+        describe('and the incoming location is yes a modal', (): void => {
+          describe('and is behind the current location', (): void => {
             it('soft dismisses the current modal', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -1074,11 +1074,11 @@ describe('ModalesProvider', (): void => {
               expect(testInterface.providerHelper.modals).toMatchObject([{ id: 0, type: 'route', location: newLocation }])
             })
 
-            describe('and the incoming modal is in the same group', () => {
+            describe('and the incoming modal is in the same group', (): void => {
               it('replece the modal with the new content', (): void => {
                 const location: Location = generateLocation()
                 const history: History = generateHistory(location)
-                const match: match = generateMatch()
+                const match: Match = generateMatch()
                 const modales: Modales = new Modales()
 
                 const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -1104,11 +1104,11 @@ describe('ModalesProvider', (): void => {
             })
           })
 
-          describe('and the incoming modal is in a group behind some modals', () => {
+          describe('and the incoming modal is in a group behind some modals', (): void => {
             it('dissmiss the forn modals and replaces the modal content', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -1142,11 +1142,11 @@ describe('ModalesProvider', (): void => {
             })
           })
 
-          describe('and is in front of the current location', () => {
+          describe('and is in front of the current location', (): void => {
             it('launches the new modal', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -1178,11 +1178,11 @@ describe('ModalesProvider', (): void => {
               ])
             })
 
-            describe('and the incoming modal is in the same group', () => {
+            describe('and the incoming modal is in the same group', (): void => {
               it('replece the modal with the new content', (): void => {
                 const location: Location = generateLocation()
                 const history: History = generateHistory(location)
-                const match: match = generateMatch()
+                const match: Match = generateMatch()
                 const modales: Modales = new Modales()
 
                 const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -1213,11 +1213,11 @@ describe('ModalesProvider', (): void => {
             })
           })
 
-          describe('and the incoming modal is in a group in front some modals', () => {
+          describe('and the incoming modal is in a group in front some modals', (): void => {
             it('launches all the modals in between (rebuild)', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -1260,12 +1260,12 @@ describe('ModalesProvider', (): void => {
         })
       })
 
-      describe('A new location REPLACE has come form props', () => {
-        describe('and the incoming location is not a modal', () => {
+      describe('A new location REPLACE has come form props', (): void => {
+        describe('and the incoming location is not a modal', (): void => {
           it('just replaces the base location with thew newone, and force dissmisses all modals', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -1287,11 +1287,11 @@ describe('ModalesProvider', (): void => {
           })
         })
 
-        describe('and the incoming location is yes a modal', () => {
+        describe('and the incoming location is yes a modal', (): void => {
           it('replaces the modal as if just replacing routes', (): void => {
             const location: Location = generateLocation()
             const history: History = generateHistory(location)
-            const match: match = generateMatch()
+            const match: Match = generateMatch()
             const modales: Modales = new Modales()
 
             const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -1312,11 +1312,11 @@ describe('ModalesProvider', (): void => {
             expect(testInterface.providerHelper.modals).toMatchObject([{ id: 1, type: 'route', location: newLocation }])
           })
 
-          describe('and the incoming location is in the same modalgroup', () => {
+          describe('and the incoming location is in the same modalgroup', (): void => {
             it('replaces the modal content', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
@@ -1338,11 +1338,11 @@ describe('ModalesProvider', (): void => {
             })
           })
 
-          describe('and the incoming location is in a different modalgroup', () => {
+          describe('and the incoming location is in a different modalgroup', (): void => {
             it('leaves the previous modal but with the previous route in the previous group, and launches a new for the replacement group', (): void => {
               const location: Location = generateLocation()
               const history: History = generateHistory(location)
-              const match: match = generateMatch()
+              const match: Match = generateMatch()
               const modales: Modales = new Modales()
 
               const component: ShallowWrapper = shallow(React.createElement(ModalesProviderX, { location, history, match, modales }))
