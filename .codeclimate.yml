@@ -2,31 +2,31 @@ version: "2"
 checks:
   argument-count:
     config:
-      threshold: 4
+      threshold: 6
   complex-logic:
     config:
-      threshold: 4
+      threshold: 10
   file-lines:
     config:
-      threshold: 400
+      threshold: 1500
   method-complexity:
     config:
-      threshold: 5
+      threshold: 7
   method-count:
     config:
-      threshold: 20
+      threshold: 200
   method-lines:
     config:
-      threshold: 50
+      threshold: 600
   nested-control-flow:
     config:
-      threshold: 4
+      threshold: 6
   return-statements:
     config:
-      threshold: 4
+      threshold: 5
   similar-code:
     config:
-      threshold: 50
+      threshold: 80
   identical-code:
     config:
-      threshold: 75
+      threshold: 80
