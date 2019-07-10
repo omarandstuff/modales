@@ -4,7 +4,8 @@ import { Modal } from './Modales.types'
 import ProviderHelper from './ProviderHelper'
 import ModalViewer from './ModalViewer'
 
-type ModalesSceneProps = {
+export type ModalesSceneProps = {
+  className?: string
   children?: React.ReactNode | React.ReactNode[]
   providerHelper: ProviderHelper
 }
@@ -33,31 +34,27 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
 
     const renderedModals = []
 
+    // We need to first check if there is a modal that will make the body be blured
+    // Just onece only one blurred modal on the top and we blur the body
+    for (let i: number = 0; i < modals.length; i++) {
+      const nextModal: Modal = modals[i]
+
+      blurComponentBeneathModals = this.shouldBlurBeneathModal(nextModal)
+
+      if (blurComponentBeneathModals) break
+    }
+
     for (let i: number = 0; i < modals.length; i++) {
       const modal: Modal = modals[i]
-
-      // We need to first check if there is a modal that will make the body be blured
-      // Just onece only one blurred modal on the top and we blur the body
-      if (i === 0) {
-        for (let j = i; j < modals.length; j++) {
-          const nextModal: Modal = modals[j]
-
-          if (!nextModal.closed) {
-            blurComponentBeneathModals = this.shouldBlurBeneathModal(nextModal)
-            break
-          }
-        }
-      }
       let actAsBlur: boolean = false
 
       // Now we need to now if this modal is being blurred by another modal at some level
       for (let j: number = i + 1; j < modals.length; j++) {
         const nextModal: Modal = modals[j]
 
-        if (!nextModal.closed) {
-          actAsBlur = this.shouldBlurBeneathModal(nextModal)
-          break
-        }
+        actAsBlur = this.shouldBlurBeneathModal(nextModal)
+
+        if (actAsBlur) break
       }
 
       if (modal.type === 'route') {
@@ -146,7 +143,10 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
   }
 
   render(): React.ReactNode {
-    const classNames = ['modales-scene', this.state.blured ? ' blured' : null].join(' ').replace(/\s+/g, ' ')
+    const classNames = ['modales-scene', this.state.blured ? ' blured' : null]
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim()
 
     return (
       <div className={classNames}>

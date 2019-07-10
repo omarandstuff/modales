@@ -68,6 +68,7 @@ export default class ModalViewer extends React.Component<Props> {
     ]
       .join(' ')
       .replace(/\s+/g, ' ')
+      .trim()
 
     return (
       <div className={classNames}>
