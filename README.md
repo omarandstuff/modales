@@ -114,14 +114,14 @@ Use the Modales instance to launch modals with a particular content. Optionally 
 //anyfile.js
 import modales from './modales'
 
-// Return true if you actally want the modal to be closed
+// Return true if you actually want the modal to be closed
 function onOutsideClick(event) {
   if (somethig) {
     return true
   }
 }
 
-// Return true if you actally want the modal to be closed
+// Return true if you actually want the modal to be closed
 function onScape(event) {
   if (somethig) {
     return true
@@ -165,7 +165,7 @@ Modales comes with a useful reference to the router so you can call route action
 import modales from './modales'
 
 modales.router.push('/path', { modal: true })
-modales.router.goBack('/path', { modal: true })
+modales.router.goBack()
 ```
 
 ## Manually Pop a custom modal
