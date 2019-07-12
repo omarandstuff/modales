@@ -9,7 +9,7 @@
 
 Modales provides a high level interface to manage modals and `Route` modals inside your React application. Modales is not a/(part of a) CSS library so modals content will look just as you like them to look; Modales will just display a modal in the center of the screen with the content you provide which also takes into account content that is bigger that the view and will provide scroll bars to it.
 
-Modales uses [react-router](https://github.com/ReactTraining/react-router) to successfully manage route modales, it also provided extra tools to navigate.
+Modales uses [react-router](https://github.com/ReactTraining/react-router) to successfully manage route modales, it also provides extra tools to navigate.
 
 ## Install
 
