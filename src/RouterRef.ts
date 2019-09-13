@@ -1,8 +1,8 @@
 import { Location, History } from 'history'
 
 export default class RouterRef {
-  private currectLocation: Location = null
-  private historyRef: History = null
+  public currectLocation: Location = null
+  public historyRef: History = null
 
   public constructor(location: Location, history: History) {
     this.currectLocation = location
