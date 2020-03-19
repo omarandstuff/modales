@@ -18,8 +18,8 @@
     "typescript": "3.5.2"
   },
   "scripts": {
-    "start": "yarn update:modales && react-scripts start",
-    "build": "yarn update:modales && react-scripts build",
+    "start": "yarn update:modales && SKIP_PREFLIGHT_CHECK=true react-scripts start",
+    "build": "yarn update:modales && SKIP_PREFLIGHT_CHECK=true react-scripts build",
     "update:modales": "cd .. && yarn build && cd examples && rm -fr node_modules/modales/* && cp -av ../dist/. node_modules/modales"
   },
   "eslintConfig": {

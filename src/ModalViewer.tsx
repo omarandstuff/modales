@@ -6,7 +6,6 @@ import './ModalViewer.css'
 export type ModalViewerProps = {
   modalId: number
   background?: ModalBackground
-  actAsBlur?: boolean
   blurEnabled?: boolean
   closed?: boolean
   onOutsideClick?: (event: Event) => void
@@ -61,13 +60,7 @@ export default class ModalViewer extends React.Component<ModalViewerProps> {
 
   public render() {
     const background = this.props.background === 'blurred' ? (this.props.blurEnabled ? 'blurred' : 'translucent') : this.props.background
-    const classNames = [
-      'modal-viewer',
-      this.props.closed ? 'closed' : null,
-      this.props.actAsBlur && this.props.blurEnabled ? 'blurified' : null,
-      this.props.withOutInitialAnimation ? 'static-init' : null,
-      background
-    ]
+    const classNames = ['modal-viewer', this.props.closed ? 'closed' : null, this.props.withOutInitialAnimation ? 'static-init' : null, background]
       .join(' ')
       .replace(/\s+/g, ' ')
       .trim()

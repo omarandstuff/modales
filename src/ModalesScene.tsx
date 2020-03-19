@@ -12,21 +12,18 @@ export type ModalesSceneProps = {
 
 type ModalesSceneState = {
   modals: Modal[]
-  blurred: boolean
 }
 
 export default class ModalesScene extends React.Component<ModalesSceneProps, ModalesSceneState> {
   private preModalScroll: number = null
 
-  state = { modals: [], blurred: false }
+  public state: ModalesSceneState = { modals: [] }
 
   componentDidMount() {
     this.props.providerHelper.modalsUpdateCallBack = this.handleModalsUpdate.bind(this)
   }
 
   private handleModalsUpdate(modals: Modal[]): void {
-    let blurComponentBeneathModals: boolean = false
-
     // Keep the body scroll before presenting the first modal
     if (!this.preModalScroll) {
       this.preModalScroll = window.pageYOffset
@@ -34,28 +31,8 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
 
     const renderedModals = []
 
-    // We need to first check if there is a modal that will make the body be blurred
-    // Just onece only one blurred modal on the top and we blur the body
-    for (let i: number = 0; i < modals.length; i++) {
-      const nextModal: Modal = modals[i]
-
-      blurComponentBeneathModals = this.shouldBlurBeneathModal(nextModal)
-
-      if (blurComponentBeneathModals) break
-    }
-
     for (let i: number = 0; i < modals.length; i++) {
       const modal: Modal = modals[i]
-      let actAsBlur: boolean = false
-
-      // Now we need to now if this modal is being blurred by another modal at some level
-      for (let j: number = i + 1; j < modals.length; j++) {
-        const nextModal: Modal = modals[j]
-
-        actAsBlur = this.shouldBlurBeneathModal(nextModal)
-
-        if (actAsBlur) break
-      }
 
       if (modal.type === 'route') {
         renderedModals.push(
@@ -67,7 +44,6 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
             onOutsideClick={modal.onOutsideClick}
             onScape={modal.onScape}
             closed={modal.closed}
-            actAsBlur={actAsBlur}
             withOutInitialAnimation={modal.withOutInitialAnimation}
           >
             <Switch location={modal.location}>{modal.content}</Switch>
@@ -83,7 +59,6 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
             onOutsideClick={modal.onOutsideClick}
             onScape={modal.onScape}
             closed={modal.closed}
-            actAsBlur={actAsBlur}
             withOutInitialAnimation={modal.withOutInitialAnimation}
           >
             {modal.content}
@@ -125,31 +100,12 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
       document.documentElement.classList.add('modal-viewing')
     }
 
-    this.setState({ modals: renderedModals, blurred: blurComponentBeneathModals && this.props.providerHelper.blurEnabled })
-  }
-
-  private shouldBlurBeneathModal(modal: Modal): boolean {
-    if (modal.type === 'route') {
-      const blurWasSet: boolean = modal.location.state && modal.location.state.background === 'blurred'
-
-      if (!modal.closed && blurWasSet) {
-        return true
-      }
-    } else if (modal.type === 'custom') {
-      if (!modal.closed && modal.background === 'blurred') {
-        return true
-      }
-    }
+    this.setState({ modals: renderedModals })
   }
 
   render(): React.ReactNode {
-    const classNames = ['modales-scene', this.state.blurred ? ' blurred' : null]
-      .join(' ')
-      .replace(/\s+/g, ' ')
-      .trim()
-
     return (
-      <div className={classNames}>
+      <div className="modales-scene">
         {this.props.children || null}
         {this.state.modals}
       </div>

@@ -1,5 +1,5 @@
 $blur-speed: 0.2s;
-$blur-density: 5px;
+$blur-density: 10px;
 $modal-background-color: black;
 $modal-blurred-opacity: 0.5;
 $modal-translucent-opacity: 0.8;
@@ -70,14 +70,11 @@ body.modal-viewing {
   bottom: 0;
   z-index: 3;
 
-  transition: filter $blur-speed;
-
-  &.blurified {
-    filter: blur($blur-density);
-  }
+  transition: backdrop-filter $blur-speed;
 
   &.blurred {
     > .background {
+      backdrop-filter: blur($blur-density);
       background-color: rgba($modal-background-color, $modal-blurred-opacity);
     }
   }

@@ -21,7 +21,7 @@ describe('ModalesScene', (): void => {
   })
 
   describe('modalsUpdateCallBack', (): void => {
-    it('react to modal changes and sets special blurred classes if needed', (): void => {
+    it('react to modal changes and stack as spected', (): void => {
       const providerHelper: ProviderHelper = new ProviderHelper()
 
       const component: ShallowWrapper<ModalesSceneProps> = shallow(React.createElement(ModalesScene, { providerHelper }))
@@ -45,10 +45,10 @@ describe('ModalesScene', (): void => {
       derivedProps = component.props()
 
       expect(derivedProps.children[1].length).toEqual(3)
-      expect(derivedProps.children[1][0].props).toMatchObject({ background: 'translucent', actAsBlur: true })
-      expect(derivedProps.children[1][1].props).toMatchObject({ background: 'transparent', actAsBlur: true })
+      expect(derivedProps.children[1][0].props).toMatchObject({ background: 'translucent' })
+      expect(derivedProps.children[1][1].props).toMatchObject({ background: 'transparent' })
       expect(derivedProps.children[1][2].props).toMatchObject({ background: 'blurred' })
-      expect(derivedProps.className).toEqual('modales-scene blurred')
+      expect(derivedProps.className).toEqual('modales-scene')
     })
 
     describe('modals are being close', (): void => {
