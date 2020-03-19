@@ -30,6 +30,7 @@ export default class Modales {
   public connectWithProvider(newProviderHelper: ProviderHelper): void {
     this.providerHelper = newProviderHelper
 
+    this.providerHelper.defaultBackground = this.configuration.defaultBackground || this.providerHelper.defaultBackground
     this.providerHelper.blurEnabled = this.configuration.blurEnabled === undefined || this.configuration.blurEnabled
     this.providerHelper.routeModalsEnabled = this.configuration.routeModalsEnabled === undefined || this.configuration.routeModalsEnabled
   }

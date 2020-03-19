@@ -16,6 +16,7 @@ export interface Modal {
 }
 
 export interface ModalesConfiguration {
+  defaultBackground?: ModalBackground
   blurEnabled?: boolean
   routeModalsEnabled?: boolean
 }

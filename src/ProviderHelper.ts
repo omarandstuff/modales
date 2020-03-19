@@ -3,6 +3,7 @@ import { Location } from 'history'
 
 export default class ProviderHelper {
   public blurEnabled: boolean = true
+  public defaultBackground: ModalBackground = 'blurred'
   public modalsUpdateCallBack: (modals: Modal[]) => void = null
   public routeModalsEnabled: boolean = true
   public modals: Modal[] = []

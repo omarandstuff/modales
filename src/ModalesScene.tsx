@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Switch } from 'react-router-dom'
-import { Modal } from './Modales.types'
+import { Modal, ModalBackground } from './Modales.types'
 import ProviderHelper from './ProviderHelper'
 import ModalViewer from './ModalViewer'
 
@@ -23,6 +23,12 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
     this.props.providerHelper.modalsUpdateCallBack = this.handleModalsUpdate.bind(this)
   }
 
+  private selectBackground(userSelectedBackground: ModalBackground): ModalBackground {
+    let background = userSelectedBackground || this.props.providerHelper.defaultBackground
+
+    return background === 'blurred' ? (this.props.providerHelper.blurEnabled ? 'blurred' : 'translucent') : background
+  }
+
   private handleModalsUpdate(modals: Modal[]): void {
     // Keep the body scroll before presenting the first modal
     if (!this.preModalScroll) {
@@ -39,8 +45,7 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
           <ModalViewer
             modalId={modal.id}
             key={`modal${modal.id}`}
-            blurEnabled={this.props.providerHelper.blurEnabled}
-            background={modal.location.state.background}
+            background={this.selectBackground(modal.location.state.background)}
             onOutsideClick={modal.onOutsideClick}
             onScape={modal.onScape}
             closed={modal.closed}
@@ -54,8 +59,7 @@ export default class ModalesScene extends React.Component<ModalesSceneProps, Mod
           <ModalViewer
             modalId={modal.id}
             key={`modal${modal.id}`}
-            blurEnabled={this.props.providerHelper.blurEnabled}
-            background={modal.background}
+            background={this.selectBackground(modal.background)}
             onOutsideClick={modal.onOutsideClick}
             onScape={modal.onScape}
             closed={modal.closed}

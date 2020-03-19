@@ -30,24 +30,24 @@ describe('ModalesScene', (): void => {
       let derivedProps: ModalesSceneProps = component.props()
 
       expect(derivedProps.children[1].length).toEqual(1)
-      expect(derivedProps.children[1][0].props).toMatchObject({ background: 'translucent' })
+      expect(derivedProps.children[1][0].props).toMatchObject({ background: 'blurred' })
       expect(derivedProps.className).toEqual('modales-scene')
 
       providerHelper.launchModal('Content', 'transparent', jest.fn(), jest.fn())
       derivedProps = component.props()
 
       expect(derivedProps.children[1].length).toEqual(2)
-      expect(derivedProps.children[1][0].props).toMatchObject({ background: 'translucent' })
+      expect(derivedProps.children[1][0].props).toMatchObject({ background: 'blurred' })
       expect(derivedProps.children[1][1].props).toMatchObject({ background: 'transparent' })
       expect(derivedProps.className).toEqual('modales-scene')
 
-      providerHelper.launchModal('Content', 'blurred', jest.fn(), jest.fn())
+      providerHelper.launchModal('Content', 'translucent', jest.fn(), jest.fn())
       derivedProps = component.props()
 
       expect(derivedProps.children[1].length).toEqual(3)
-      expect(derivedProps.children[1][0].props).toMatchObject({ background: 'translucent' })
+      expect(derivedProps.children[1][0].props).toMatchObject({ background: 'blurred' })
       expect(derivedProps.children[1][1].props).toMatchObject({ background: 'transparent' })
-      expect(derivedProps.children[1][2].props).toMatchObject({ background: 'blurred' })
+      expect(derivedProps.children[1][2].props).toMatchObject({ background: 'translucent' })
       expect(derivedProps.className).toEqual('modales-scene')
     })
 
